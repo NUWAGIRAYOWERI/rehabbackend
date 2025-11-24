@@ -1,0 +1,8 @@
+{
+  "/(admin)/dashboard/page": "app/(admin)/dashboard/page.js",
+  "/(admin)/testimonials/new/page": "app/(admin)/testimonials/new/page.js",
+  "/(admin)/testimonials/page": "app/(admin)/testimonials/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js"
+}
