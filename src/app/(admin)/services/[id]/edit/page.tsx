@@ -167,9 +167,7 @@
 //   );
 // }
 
-
-
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -202,12 +200,15 @@ export default function EditServicePage() {
 
     const fetchService = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/services/${id}`);
+        const res = await axios.get(
+          `https://rehabserver.onrender.com/services/${id}`
+        );
         const data = res.data;
         setService({
           name: data.name,
           description: data.description,
-          long_description: data.long_description || data.long_description || "",
+          long_description:
+            data.long_description || data.long_description || "",
           category: data.category,
           status: data.status,
           icon: data.icon || "",
@@ -222,7 +223,9 @@ export default function EditServicePage() {
     fetchService();
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     if (!service) return;
     const { name, value } = e.target;
     setService({ ...service, [name]: value });
@@ -234,7 +237,7 @@ export default function EditServicePage() {
     setSaving(true);
 
     try {
-      await axios.put(`http://localhost:5000/services/${id}`, {
+      await axios.put(`https://rehabserver.onrender.com/services/${id}`, {
         name: service.name,
         description: service.description,
         long_description: service.long_description,
@@ -256,7 +259,8 @@ export default function EditServicePage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh] text-gray-500">
-        <Loader2 className="h-6 w-6 mr-2 animate-spin" /> Loading service details...
+        <Loader2 className="h-6 w-6 mr-2 animate-spin" /> Loading service
+        details...
       </div>
     );
   }
@@ -281,7 +285,12 @@ export default function EditServicePage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block font-medium">Name</label>
-              <Input name="name" value={service.name} onChange={handleChange} required />
+              <Input
+                name="name"
+                value={service.name}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div>
@@ -306,12 +315,22 @@ export default function EditServicePage() {
 
             <div>
               <label className="block font-medium">Category</label>
-              <Input name="category" value={service.category} onChange={handleChange} required />
+              <Input
+                name="category"
+                value={service.category}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div>
               <label className="block font-medium">Status</label>
-              <Input name="status" value={service.status} onChange={handleChange} required />
+              <Input
+                name="status"
+                value={service.status}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="flex justify-end mt-6 space-x-3">

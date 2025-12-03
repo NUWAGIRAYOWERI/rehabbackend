@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,10 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -49,7 +46,10 @@ interface ServiceFormProps {
   isEditMode?: boolean;
 }
 
-export function ServiceForm({ initialData, isEditMode = false }: ServiceFormProps) {
+export function ServiceForm({
+  initialData,
+  isEditMode = false,
+}: ServiceFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -86,10 +86,13 @@ export function ServiceForm({ initialData, isEditMode = false }: ServiceFormProp
         formData.append("image", fileInputRef.current.files[0]);
       }
 
-      const response = await fetch("http://localhost:5000/services", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://rehabserver.onrender.com/services",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const text = await response.text();
@@ -240,7 +243,10 @@ export function ServiceForm({ initialData, isEditMode = false }: ServiceFormProp
                       <FormItem>
                         <FormLabel>Category</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., Physical Rehab" {...field} />
+                          <Input
+                            placeholder="e.g., Physical Rehab"
+                            {...field}
+                          />
                         </FormControl>
                         <FormDescription>
                           Helps group similar services together.

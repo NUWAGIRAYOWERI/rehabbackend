@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -62,7 +62,9 @@ export default function ServicesPage() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/services");
+        const res = await axios.get(
+          "https://rehabserver.onrender.com/services"
+        );
         setServices(res.data);
       } catch (err) {
         console.error("❌ Error fetching services:", err);
@@ -77,7 +79,9 @@ export default function ServicesPage() {
   const handleDelete = async () => {
     if (!selectedService) return;
     try {
-      await axios.delete(`http://localhost:5000/services/${selectedService.service_id}`);
+      await axios.delete(
+        `https://rehabserver.onrender.com/services/${selectedService.service_id}`
+      );
       setServices((prev) =>
         prev.filter((s) => s.service_id !== selectedService.service_id)
       );
@@ -147,7 +151,7 @@ export default function ServicesPage() {
                       src={
                         service.image_url.startsWith("http")
                           ? service.image_url
-                          : `http://localhost:5000/uploads/${service.image_url}`
+                          : `https://rehabserver.onrender.com/uploads/${service.image_url}`
                       }
                       alt={service.name}
                       width={64}
@@ -196,7 +200,9 @@ export default function ServicesPage() {
 
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onSelect={() => handleEdit(service.service_id)}>
+                      <DropdownMenuItem
+                        onSelect={() => handleEdit(service.service_id)}
+                      >
                         View
                       </DropdownMenuItem>
                       <DropdownMenuItem

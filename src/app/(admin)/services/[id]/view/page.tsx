@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -41,7 +41,9 @@ export default function ViewServicePage() {
 
     const fetchService = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/services/${id}`);
+        const res = await axios.get(
+          `https://rehabserver.onrender.com/services/${id}`
+        );
         // ✅ Normalize keys in case backend sends snake_case or camelCase inconsistently
         const data = res.data;
         const normalizedService: Service = {
@@ -62,7 +64,8 @@ export default function ViewServicePage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh] text-gray-500">
-        <Loader2 className="h-6 w-6 mr-2 animate-spin" /> Loading service details...
+        <Loader2 className="h-6 w-6 mr-2 animate-spin" /> Loading service
+        details...
       </div>
     );
   }
@@ -94,8 +97,12 @@ export default function ViewServicePage() {
         <CardHeader>
           <div className="flex items-start justify-between flex-wrap gap-2">
             <div>
-              <CardTitle className="text-2xl font-semibold">{service.name}</CardTitle>
-              <CardDescription className="text-gray-600">{service.category}</CardDescription>
+              <CardTitle className="text-2xl font-semibold">
+                {service.name}
+              </CardTitle>
+              <CardDescription className="text-gray-600">
+                {service.category}
+              </CardDescription>
             </div>
             <Badge
               className={`${
@@ -111,18 +118,21 @@ export default function ViewServicePage() {
 
         <CardContent>
           <div className="space-y-4">
-            <p className="text-gray-700 leading-relaxed">{service.description}</p>
+            <p className="text-gray-700 leading-relaxed">
+              {service.description}
+            </p>
 
-            {service.long_description && service.long_description.trim() !== "" && (
-              <div>
-                <h2 className="text-lg font-semibold mt-4 mb-2 text-gray-800">
-                  Full Description
-                </h2>
-                <p className="text-gray-700 whitespace-pre-line leading-relaxed">
-                  {service.long_description}
-                </p>
-              </div>
-            )}
+            {service.long_description &&
+              service.long_description.trim() !== "" && (
+                <div>
+                  <h2 className="text-lg font-semibold mt-4 mb-2 text-gray-800">
+                    Full Description
+                  </h2>
+                  <p className="text-gray-700 whitespace-pre-line leading-relaxed">
+                    {service.long_description}
+                  </p>
+                </div>
+              )}
 
             {service.created_at && (
               <p className="text-xs text-gray-500 mt-6">
@@ -135,7 +145,9 @@ export default function ViewServicePage() {
                 <Link href="/services">Back to Services</Link>
               </Button>
               <Button asChild>
-                <Link href={`/services/${service.service_id}/edit`}>Edit Service</Link>
+                <Link href={`/services/${service.service_id}/edit`}>
+                  Edit Service
+                </Link>
               </Button>
             </div>
           </div>

@@ -26,9 +26,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerClose } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerClose,
+} from "@/components/ui/drawer";
 import { format, formatDistanceToNow } from "date-fns";
-
 
 interface Message {
   id?: string;
@@ -51,7 +57,7 @@ export default function MessagesPage() {
   useEffect(() => {
     async function fetchMessages() {
       try {
-        const res = await fetch("http://localhost:5000/contacts");
+        const res = await fetch("https://rehabserver.onrender.com/contacts");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setMessages(data);
@@ -71,15 +77,13 @@ export default function MessagesPage() {
     if (!id) return;
 
     try {
-      await fetch(`http://localhost:5000/contacts/${id}/read`, {
+      await fetch(`https://rehabserver.onrender.com/contacts/${id}/read`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
       });
 
       setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === id ? { ...msg, status: "Read" } : msg
-        )
+        prev.map((msg) => (msg.id === id ? { ...msg, status: "Read" } : msg))
       );
     } catch (err) {
       console.error("Error marking message as read:", err);
@@ -100,23 +104,28 @@ export default function MessagesPage() {
     <>
       <Card>
         <CardHeader>
-  <div className="flex items-center justify-between">
-    <div>
-      <CardTitle className="font-headline">Messages & Inquiries</CardTitle>
-      <CardDescription>Unread and recent messages only.</CardDescription>
-    </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="font-headline">
+                Messages & Inquiries
+              </CardTitle>
+              <CardDescription>
+                Unread and recent messages only.
+              </CardDescription>
+            </div>
 
-    <Button variant="outline" asChild>
-      <a href="/messages/archive">
-        <Archive className="mr-2 h-4 w-4" /> View Archive
-      </a>
-    </Button>
-  </div>
-</CardHeader>
-
+            <Button variant="outline" asChild>
+              <a href="/messages/archive">
+                <Archive className="mr-2 h-4 w-4" /> View Archive
+              </a>
+            </Button>
+          </div>
+        </CardHeader>
 
         <CardContent>
-          {loading && <p className="text-muted-foreground">Loading messages...</p>}
+          {loading && (
+            <p className="text-muted-foreground">Loading messages...</p>
+          )}
           {error && <p className="text-red-500">{error}</p>}
 
           {!loading && !error && (
@@ -124,7 +133,9 @@ export default function MessagesPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>From</TableHead>
-                  <TableHead className="hidden lg:table-cell">Message</TableHead>
+                  <TableHead className="hidden lg:table-cell">
+                    Message
+                  </TableHead>
                   <TableHead className="hidden sm:table-cell">Status</TableHead>
                   <TableHead className="hidden sm:table-cell text-right">
                     Received
@@ -184,16 +195,21 @@ export default function MessagesPage() {
 
                       <TableCell className="hidden sm:table-cell text-right font-normal">
                         {msg.createdAt
-                        ? format(new Date(msg.createdAt), "MMM d, yyyy, h:mm a")
-                        : "N/A"}
-
-
+                          ? format(
+                              new Date(msg.createdAt),
+                              "MMM d, yyyy, h:mm a"
+                            )
+                          : "N/A"}
                       </TableCell>
 
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button size="icon" variant="ghost" onClick={(e) => e.stopPropagation()}>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <MoreHorizontal />
                             </Button>
                           </DropdownMenuTrigger>
@@ -245,10 +261,11 @@ export default function MessagesPage() {
                 <p className="text-sm text-muted-foreground">
                   <strong>Received:</strong>{" "}
                   {selectedMessage?.createdAt
-                  ? format(new Date(selectedMessage.createdAt), "MMM d, yyyy, h:mm a")
-                  : "N/A"}
-
-
+                    ? format(
+                        new Date(selectedMessage.createdAt),
+                        "MMM d, yyyy, h:mm a"
+                      )
+                    : "N/A"}
                 </p>
 
                 {selectedMessage.phone && (
