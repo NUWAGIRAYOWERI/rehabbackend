@@ -185,34 +185,23 @@
 //   );
 // }
 
-
-
 "use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import {
-  Card,
-  CardContent,
-  CardFooter
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
 
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import { Upload, MoreVertical } from "lucide-react";
@@ -228,7 +217,7 @@ interface GalleryItem {
 }
 
 // ✅ Backend base URL
-const BASE_URL = "https://rehabserver.onrender.com";
+const API_URL = "https://rehabserver.onrender.com";
 
 export default function GalleryPage() {
   const [galleryImages, setGalleryImages] = useState<GalleryItem[]>([]);
@@ -239,13 +228,15 @@ export default function GalleryPage() {
   useEffect(() => {
     const fetchGallery = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/gallery`);
+        const res = await fetch(`${API_URL}/gallery`);
         if (!res.ok) throw new Error("Failed to fetch images");
         const data: GalleryItem[] = await res.json();
 
         // Set images and categories
         setGalleryImages(data);
-        const uniqueCats = Array.from(new Set(data.map((img) => img.category))).filter(Boolean);
+        const uniqueCats = Array.from(
+          new Set(data.map((img) => img.category))
+        ).filter(Boolean);
         setCategories(["All", ...uniqueCats]);
       } catch (err) {
         console.error("Error fetching gallery:", err);
@@ -264,7 +255,7 @@ export default function GalleryPage() {
     if (!confirm("Are you sure you want to delete this image?")) return;
 
     try {
-      const res = await fetch(`${BASE_URL}/gallery/${id}`, {
+      const res = await fetch(`${API_URL}/gallery/${id}`, {
         method: "DELETE",
       });
 
@@ -341,11 +332,14 @@ export default function GalleryPage() {
               {galleryImages
                 .filter((img) => cat === "All" || img.category === cat)
                 .map((image, index) => (
-                  <Card key={image.image_id ?? index} className="group overflow-hidden">
+                  <Card
+                    key={image.image_id ?? index}
+                    className="group overflow-hidden"
+                  >
                     <CardContent className="relative p-0">
                       {/* ✅ Construct full URL for images */}
                       <Image
-                        src={`${BASE_URL}${image.image_url}`}
+                        src={`${API_URL}${image.image_url}`}
                         alt={image.title ?? "Gallery image"}
                         width={600}
                         height={400}
@@ -379,7 +373,9 @@ export default function GalleryPage() {
 
                     <CardFooter className="p-4">
                       <div>
-                        <p className="font-semibold">{image.title ?? "Untitled"}</p>
+                        <p className="font-semibold">
+                          {image.title ?? "Untitled"}
+                        </p>
                         <p className="text-sm text-muted-foreground">
                           {image.category ?? "Uncategorized"}
                         </p>
