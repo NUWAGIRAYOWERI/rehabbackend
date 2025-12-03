@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -79,7 +79,8 @@ export default function TestimonialForm({
         formData.append("photo", values.avatar[0]);
       }
 
-      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const API =
+        process.env.NEXT_PUBLIC_API_URL || "https://rehabserver.onrender.com";
 
       const endpoint = isEditMode
         ? `${API}/testimonials/${initialData.id}`
@@ -115,7 +116,9 @@ export default function TestimonialForm({
             {isEditMode ? "Edit Testimonial" : "Add Testimonial"}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {isEditMode ? "Update testimonial details." : "Create a new testimonial."}
+            {isEditMode
+              ? "Update testimonial details."
+              : "Create a new testimonial."}
           </p>
         </div>
       </div>
@@ -232,11 +235,19 @@ export default function TestimonialForm({
 
               {/* Footer */}
               <div className="flex justify-end gap-2">
-                <Button variant="outline" type="button" onClick={() => router.push("/testimonials")}>
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => router.push("/testimonials")}
+                >
                   Cancel
                 </Button>
                 <Button type="submit" disabled={loading}>
-                  {loading ? "Saving..." : isEditMode ? "Save Changes" : "Add Testimonial"}
+                  {loading
+                    ? "Saving..."
+                    : isEditMode
+                    ? "Save Changes"
+                    : "Add Testimonial"}
                 </Button>
               </div>
             </form>

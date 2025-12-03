@@ -29,12 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -77,7 +72,7 @@ export default function AppointmentsPage() {
   async function fetchAppointments() {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/appointments");
+      const res = await fetch("https://rehabserver.onrender.com/appointments");
       const json = await res.json();
 
       if (json.success) {
@@ -108,7 +103,7 @@ export default function AppointmentsPage() {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/appointments", {
+      const res = await fetch("https://rehabserver.onrender.com/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -137,33 +132,36 @@ export default function AppointmentsPage() {
     }
   }
 
- // DELETE APPOINTMENT (CRASH-PROOF)
-async function handleDelete(id: number | string) {
-  try {
-    const res = await fetch(`http://localhost:5000/appointments/${id}`, {
-      method: "DELETE",
-    });
-
-    // ✅ Safely parse JSON only if body exists
-    let json: any = {};
+  // DELETE APPOINTMENT (CRASH-PROOF)
+  async function handleDelete(id: number | string) {
     try {
-      json = await res.json();
-    } catch {
-      json = {}; // empty body -> no crash
-    }
+      const res = await fetch(
+        `https://rehabserver.onrender.com/appointments/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-    // If DELETE was successful (status 200 or 204), update UI
-    if (res.ok) {
-      setAppointments((prev) => prev.filter((a) => a.id !== id));
-      return;
-    }
+      // ✅ Safely parse JSON only if body exists
+      let json: any = {};
+      try {
+        json = await res.json();
+      } catch {
+        json = {}; // empty body -> no crash
+      }
 
-    // Otherwise, log error
-    console.error("Delete failed", json);
-  } catch (err) {
-    console.error("Error deleting appointment", err);
+      // If DELETE was successful (status 200 or 204), update UI
+      if (res.ok) {
+        setAppointments((prev) => prev.filter((a) => a.id !== id));
+        return;
+      }
+
+      // Otherwise, log error
+      console.error("Delete failed", json);
+    } catch (err) {
+      console.error("Error deleting appointment", err);
+    }
   }
-}
 
   const upcoming = appointments.filter((a) => a.status === "Upcoming");
   const past = appointments.filter((a) => a.status === "Past");
@@ -335,8 +333,7 @@ function AppointmentsTable({
                 {app.time
                   ? format(
                       parseISO(
-                        typeof app.time === "string" &&
-                        !app.time.includes("T")
+                        typeof app.time === "string" && !app.time.includes("T")
                           ? app.time.replace(" ", "T")
                           : app.time
                       ),
@@ -381,4 +378,3 @@ function AppointmentsTable({
     </>
   );
 }
-

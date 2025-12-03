@@ -52,7 +52,7 @@ interface Testimonial {
   created_at?: string;
 }
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://rehabserver.onrender.com";
 
 export default function TestimonialsPage() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -77,7 +77,9 @@ export default function TestimonialsPage() {
 
   const handleDelete = async (id: number) => {
     try {
-      const res = await fetch(`${API_URL}/testimonials/${id}`, { method: "DELETE" });
+      const res = await fetch(`${API_URL}/testimonials/${id}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error("Failed to delete testimonial");
       setTestimonials((prev) => prev.filter((t) => t.testimonial_id !== id));
     } catch (error) {
@@ -87,7 +89,9 @@ export default function TestimonialsPage() {
 
   if (loading) {
     return (
-      <p className="text-center text-muted-foreground">Loading testimonials...</p>
+      <p className="text-center text-muted-foreground">
+        Loading testimonials...
+      </p>
     );
   }
 
@@ -124,7 +128,9 @@ export default function TestimonialsPage() {
                     <AvatarImage
                       src={
                         t.photo_url && !t.photo_url.startsWith("http")
-                          ? `${API_URL}${t.photo_url.startsWith("/") ? "" : "/"}${t.photo_url}`
+                          ? `${API_URL}${
+                              t.photo_url.startsWith("/") ? "" : "/"
+                            }${t.photo_url}`
                           : t.photo_url || "/default-avatar.png"
                       }
                       alt={t.patient_name}
@@ -174,7 +180,9 @@ export default function TestimonialsPage() {
                           <img
                             src={
                               t.photo_url && !t.photo_url.startsWith("http")
-                                ? `${API_URL}${t.photo_url.startsWith("/") ? "" : "/"}${t.photo_url}`
+                                ? `${API_URL}${
+                                    t.photo_url.startsWith("/") ? "" : "/"
+                                  }${t.photo_url}`
                                 : t.photo_url || "/default-avatar.png"
                             }
                             alt={t.patient_name}
@@ -188,7 +196,9 @@ export default function TestimonialsPage() {
                               <Star
                                 key={i}
                                 className={`h-5 w-5 ${
-                                  i < t.rating ? "fill-current" : "text-gray-300"
+                                  i < t.rating
+                                    ? "fill-current"
+                                    : "text-gray-300"
                                 }`}
                               />
                             ))}
