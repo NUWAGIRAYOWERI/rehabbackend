@@ -228,7 +228,7 @@ interface GalleryItem {
 }
 
 // ✅ Backend base URL
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://rehabserver.onrender.com";
 
 export default function GalleryPage() {
   const [galleryImages, setGalleryImages] = useState<GalleryItem[]>([]);

@@ -56,7 +56,7 @@ export default function NewImagePage() {
   }
 
   try {
-    const res = await fetch("http://localhost:5000/gallery/upload", {
+    const res = await fetch("https://rehabserver.onrender.com/gallery/upload", {
       method: "POST",
       body: formData,
     });
