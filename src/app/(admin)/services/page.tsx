@@ -151,7 +151,7 @@ export default function ServicesPage() {
                       src={
                         service.image_url.startsWith("http")
                           ? service.image_url
-                          : `https://rehabserver.onrender.com/uploads/${service.image_url}`
+                          : `${service.image_url}`
                       }
                       alt={service.name}
                       width={64}
