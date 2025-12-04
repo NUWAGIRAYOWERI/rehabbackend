@@ -1,4 +1,3 @@
-
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -29,6 +28,11 @@ interface GalleryItem {
 // ✅ Backend base URL
 const API_URL = "https://rehabserver.onrender.com";
 
+// ✅ Helper to safely build image URLs (fixes your problem)
+const buildImageUrl = (url: string) => {
+  return url.startsWith("http") ? url : `${API_URL}${url}`;
+};
+
 export default function GalleryPage() {
   const [galleryImages, setGalleryImages] = useState<GalleryItem[]>([]);
   const [categories, setCategories] = useState<string[]>(["All"]);
@@ -42,11 +46,13 @@ export default function GalleryPage() {
         if (!res.ok) throw new Error("Failed to fetch images");
         const data: GalleryItem[] = await res.json();
 
-        // Set images and categories
         setGalleryImages(data);
+
+        // Extract categories
         const uniqueCats = Array.from(
           new Set(data.map((img) => img.category))
         ).filter(Boolean);
+
         setCategories(["All", ...uniqueCats]);
       } catch (err) {
         console.error("Error fetching gallery:", err);
@@ -71,8 +77,8 @@ export default function GalleryPage() {
 
       if (!res.ok) throw new Error("Failed to delete image");
 
-      // Remove image from state instantly
       setGalleryImages((prev) => prev.filter((img) => img.image_id !== id));
+
       alert("Image deleted successfully");
     } catch (error) {
       console.error("Error deleting image:", error);
@@ -80,7 +86,7 @@ export default function GalleryPage() {
     }
   };
 
-  // ✅ Loading state
+  // Loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
@@ -89,7 +95,7 @@ export default function GalleryPage() {
     );
   }
 
-  // ✅ No images state
+  // No images state
   if (!galleryImages.length) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
@@ -104,7 +110,6 @@ export default function GalleryPage() {
     );
   }
 
-  // ✅ Page layout
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -126,7 +131,7 @@ export default function GalleryPage() {
         </Button>
       </div>
 
-      {/* Tabs for categories */}
+      {/* Tabs */}
       <Tabs defaultValue="All" className="w-full">
         <TabsList>
           {categories.map((cat) => (
@@ -147,16 +152,16 @@ export default function GalleryPage() {
                     className="group overflow-hidden"
                   >
                     <CardContent className="relative p-0">
-                      {/* ✅ Construct full URL for images */}
+                      {/* ✔️ FIXED: Proper dynamic image URL */}
                       <Image
-                        src={`${API_URL}${image.image_url}`}
+                        src={buildImageUrl(image.image_url)}
                         alt={image.title ?? "Gallery image"}
                         width={600}
                         height={400}
                         className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
 
-                      {/* Dropdown with only Delete */}
+                      {/* Dropdown delete button */}
                       <div className="absolute right-2 top-2">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
